@@ -15,10 +15,10 @@ import br.com.anotaai.model.NoteViewModel
 @Composable
 fun EditNoteScreen(noteViewModel: NoteViewModel, navController: NavHostController, noteId: Int) {
     val note by noteViewModel.selectedNote.observeAsState()
-    var name by remember { mutableStateOf("") }
-    var status by remember { mutableStateOf("") }
-    var nameError by remember { mutableStateOf(false) }
-    var statusError by remember { mutableStateOf(false) }
+    var titulo by remember { mutableStateOf("") }
+    var conteudo by remember { mutableStateOf("") }
+    var tituloError by remember { mutableStateOf(false) }
+    var conteudoError by remember { mutableStateOf(false) }
 
     // Recarregar dados da nota quando o noteId mudar
     LaunchedEffect(noteId) {
@@ -28,8 +28,8 @@ fun EditNoteScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
     // Atualizar os campos de texto quando a nota for carregada
     LaunchedEffect(note) {
         note?.let {
-            name = it.name
-            status = it.status
+            titulo = it.titulo
+            conteudo = it.conteudo
         }
     }
 
@@ -50,15 +50,15 @@ fun EditNoteScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = name,
+            value = titulo,
             onValueChange = {
-                if (it.length <= 255) name = it
+                if (it.length <= 255) titulo = it
             },
             label = { Text("Note Name") },
-            isError = nameError,
-            placeholder = { Text("Enter note name") }
+            isError = tituloError,
+            placeholder = { Text("Enter note titulo") }
         )
-        if (nameError) {
+        if (tituloError) {
             Text("Note Name is required and should be up to 255 characters.",
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodySmall
@@ -68,15 +68,15 @@ fun EditNoteScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = status,
+            value = conteudo,
             onValueChange = {
-                if (it.length <= 255) status = it
+                if (it.length <= 255) conteudo = it
             },
             label = { Text("Status") },
-            isError = statusError,
-            placeholder = { Text("Enter status") }
+            isError = conteudoError,
+            placeholder = { Text("Enter conteudo") }
         )
-        if (statusError) {
+        if (conteudoError) {
             Text("Status is required and should be up to 255 characters.",
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodySmall
@@ -85,11 +85,11 @@ fun EditNoteScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
 
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = {
-            nameError = name.isBlank()
-            statusError = status.isBlank()
+            tituloError = titulo.isBlank()
+            conteudoError = conteudo.isBlank()
 
-            if (!nameError && !statusError) {
-                noteViewModel.updateNote(note!!.copy(name = name, status = status))
+            if (!tituloError && !conteudoError) {
+                noteViewModel.updateNote(note!!.copy(titulo = titulo, conteudo = conteudo))
                 navController.navigate("list_notes")
             }
         }) {

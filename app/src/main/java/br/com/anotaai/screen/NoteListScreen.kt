@@ -92,9 +92,9 @@ fun NoteItem(note: Note, onEdit: (Int) -> Unit, onDelete: (Int) -> Unit, onClick
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-                Text(text = "Name: ${note.name}", style = MaterialTheme.typography.bodyLarge)
+                Text(text = "${note.titulo}", style = MaterialTheme.typography.bodyLarge)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Status: ${note.status}", style = MaterialTheme.typography.bodyMedium)
+                Text(text = " ${note.conteudo}", style = MaterialTheme.typography.bodyMedium)
             }
             Row {
                 IconButton(onClick = { onEdit(note.id) }) {

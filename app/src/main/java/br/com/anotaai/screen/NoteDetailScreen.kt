@@ -47,8 +47,8 @@ fun NoteDetailScreen(noteViewModel: NoteViewModel, navController: NavHostControl
             // Se a nota foi carregada, mostrar os detalhes
             note?.let {
                 Column {
-                    Text(text = "Name: ${it.name}", style = MaterialTheme.typography.bodyLarge)
-                    Text(text = "Status: ${it.status}", style = MaterialTheme.typography.bodyMedium)
+                    Text(text = "${it.titulo}", style = MaterialTheme.typography.bodyLarge)
+                    Text(text = "${it.conteudo}", style = MaterialTheme.typography.bodyMedium)
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(onClick = { navController.navigate("edit_note/${it.id}") }) {
                         Text("Edit Note")

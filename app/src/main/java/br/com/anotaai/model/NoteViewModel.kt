@@ -19,9 +19,9 @@ class NoteViewModel(private val repository: NoteRepository) : ViewModel() {
         loadNotes()
     }
 
-    fun saveNote(name: String, status: String) {
+    fun saveNote(titulo: String, conteudo: String) {
         viewModelScope.launch {
-            val note = Note(name = name, status = status)
+            val note = Note(titulo = titulo, conteudo = conteudo)
             repository.insert(note)
             loadNotes()
         }
