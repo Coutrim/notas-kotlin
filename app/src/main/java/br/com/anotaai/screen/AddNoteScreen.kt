@@ -1,29 +1,19 @@
 package br.com.anotaai.screen
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import br.com.anotaai.R
 import br.com.anotaai.model.NoteViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,7 +28,8 @@ fun AddNoteScreen(noteViewModel: NoteViewModel, navController: NavHostController
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Top, // Alinha o conteúdo na parte superior
+        horizontalAlignment = Alignment.CenterHorizontally // Centraliza o conteúdo horizontalmente
     ) {
         TopAppBar(
             title = { Text("Add Note") },
@@ -46,21 +37,53 @@ fun AddNoteScreen(noteViewModel: NoteViewModel, navController: NavHostController
                 IconButton(onClick = { navController.navigateUp() }) {
                     Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
                 }
-            }
+            },
+            modifier = Modifier.padding(bottom = 16.dp) // Adiciona espaçamento abaixo da barra
         )
-        Spacer(modifier = Modifier.height(16.dp))
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(400.dp) // Ajuste a altura conforme necessário
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.gatoemcimadolivro), // Substitua pelo ID da sua imagem
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(400.dp) // Ajuste a altura conforme necessário
+                    .padding(top = 16.dp)
+                    .padding(bottom = 16.dp),
+                contentScale = ContentScale.Crop
+            )
+            // Créditos posicionados na parte inferior direita
+            Text(
+                text = "Image by Freepik",
+                style = MaterialTheme.typography.bodySmall.copy(
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontWeight = FontWeight.Light
+                ),
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(8.dp)
+                    // Ajuste o padding conforme necessário
+            )
+        }
+
+        Spacer(modifier = Modifier.height(50.dp))
 
         OutlinedTextField(
             value = titulo,
             onValueChange = {
-                if (it.length <= 255) titulo = it
+                if (it.length <= 60) titulo = it // Limita o título a 60 caracteres
             },
             label = { Text("Note Name") },
             isError = tituloError,
-            placeholder = { Text("Enter note titulo") }
+            placeholder = { Text("Enter note title") },
+            modifier = Modifier.fillMaxWidth() // Garante que o campo de texto ocupe toda a largura disponível
         )
         if (tituloError) {
-            Text("Note Name is required and should be up to 255 characters.",
+            Text("Note Name is required and should be up to 60 characters.",
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodySmall
             )
@@ -75,7 +98,8 @@ fun AddNoteScreen(noteViewModel: NoteViewModel, navController: NavHostController
             },
             label = { Text("Status") },
             isError = conteudoError,
-            placeholder = { Text("Enter conteudo") }
+            placeholder = { Text("Enter content") },
+            modifier = Modifier.fillMaxWidth() // Garante que o campo de texto ocupe toda a largura disponível
         )
         if (conteudoError) {
             Text("Status is required and should be up to 255 characters.",
@@ -85,15 +109,19 @@ fun AddNoteScreen(noteViewModel: NoteViewModel, navController: NavHostController
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = {
-            tituloError = titulo.isBlank()
-            conteudoError = conteudo.isBlank()
 
-            if (!tituloError && !conteudoError) {
-                noteViewModel.saveNote(titulo, conteudo)
-                navController.navigate("list_notes") // Navegar para a lista de notas
-            }
-        }) {
+        Button(
+            onClick = {
+                tituloError = titulo.isBlank()
+                conteudoError = conteudo.isBlank()
+
+                if (!tituloError && !conteudoError) {
+                    noteViewModel.saveNote(titulo, conteudo)
+                    navController.navigate("list_notes") // Navegar para a lista de notas
+                }
+            },
+            modifier = Modifier.fillMaxWidth() // Garante que o botão ocupe toda a largura disponível
+        ) {
             Text("Save Note")
         }
     }

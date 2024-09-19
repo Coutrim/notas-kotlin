@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -28,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import br.com.anotaai.model.Note
@@ -92,18 +94,29 @@ fun NoteItem(note: Note, onEdit: (Int) -> Unit, onDelete: (Int) -> Unit, onClick
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-                Text(text = "${note.titulo}", style = MaterialTheme.typography.bodyLarge)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "${note.titulo}",
+                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp)) // Espaço entre o título e os botões
+                    Row {
+                        IconButton(onClick = { onEdit(note.id) }) {
+                            Icon(Icons.Filled.Edit, contentDescription = "Edit")
+                        }
+                        IconButton(onClick = { onDelete(note.id) }) {
+                            Icon(Icons.Filled.Delete, contentDescription = "Delete")
+                        }
+                    }
+                }
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = " ${note.conteudo}", style = MaterialTheme.typography.bodyMedium)
-            }
-            Row {
-                IconButton(onClick = { onEdit(note.id) }) {
-                    Icon(Icons.Filled.Edit, contentDescription = "Edit")
-                }
-                IconButton(onClick = { onDelete(note.id) }) {
-                    Icon(Icons.Filled.Delete, contentDescription = "Delete")
-                }
+                Text(text = "${note.conteudo}", style = MaterialTheme.typography.bodyMedium)
             }
         }
     }
 }
+

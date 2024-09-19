@@ -1,5 +1,3 @@
-package br.com.anotaai.screen
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -33,67 +31,81 @@ fun EditNoteScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center
-    ) {
-        TopAppBar(
-            title = { Text("Edit Note") },
-            navigationIcon = {
-                IconButton(onClick = { navController.navigateUp() }) {
-                    Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Edit Note") },
+                navigationIcon = {
+                    IconButton(onClick = { navController.navigateUp() }) {
+                        Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
+                    }
                 }
-            }
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = titulo,
-            onValueChange = {
-                if (it.length <= 255) titulo = it
-            },
-            label = { Text("Note Name") },
-            isError = tituloError,
-            placeholder = { Text("Enter note titulo") }
-        )
-        if (tituloError) {
-            Text("Note Name is required and should be up to 255 characters.",
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodySmall
             )
         }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Top
+        ) {
+            Spacer(modifier = Modifier.height(16.dp))
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = conteudo,
-            onValueChange = {
-                if (it.length <= 255) conteudo = it
-            },
-            label = { Text("Status") },
-            isError = conteudoError,
-            placeholder = { Text("Enter conteudo") }
-        )
-        if (conteudoError) {
-            Text("Status is required and should be up to 255 characters.",
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodySmall
+            OutlinedTextField(
+                value = titulo,
+                onValueChange = {
+                    if (it.length <= 255) titulo = it
+                },
+                label = { Text("Note Name") },
+                isError = tituloError,
+                placeholder = { Text("Enter note title") },
+                modifier = Modifier.fillMaxWidth()
             )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = {
-            tituloError = titulo.isBlank()
-            conteudoError = conteudo.isBlank()
-
-            if (!tituloError && !conteudoError) {
-                noteViewModel.updateNote(note!!.copy(titulo = titulo, conteudo = conteudo))
-                navController.navigate("list_notes")
+            if (tituloError) {
+                Text(
+                    "Note Name is required and should be up to 255 characters.",
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall
+                )
             }
-        }) {
-            Text("Update Note")
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = conteudo,
+                onValueChange = {
+                    if (it.length <= 255) conteudo = it
+                },
+                label = { Text("Content") },
+                isError = conteudoError,
+                placeholder = { Text("Enter content") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            if (conteudoError) {
+                Text(
+                    "Content is required and should be up to 255 characters.",
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = {
+                    tituloError = titulo.isBlank()
+                    conteudoError = conteudo.isBlank()
+
+                    if (!tituloError && !conteudoError) {
+                        noteViewModel.updateNote(note!!.copy(titulo = titulo, conteudo = conteudo))
+                        navController.navigate("list_notes")
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Update Note")
+            }
         }
     }
 }
