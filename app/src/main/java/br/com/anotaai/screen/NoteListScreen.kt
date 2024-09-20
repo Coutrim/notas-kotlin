@@ -18,6 +18,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
@@ -28,6 +30,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -39,7 +44,6 @@ import br.com.anotaai.R
 import br.com.anotaai.model.Note
 import br.com.anotaai.model.NoteViewModel
 
-
 @Composable
 fun NoteListScreen(noteViewModel: NoteViewModel, navController: NavHostController) {
     val notes by noteViewModel.notes.observeAsState(emptyList())
@@ -49,12 +53,13 @@ fun NoteListScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
             .fillMaxSize()
             .padding(16.dp)
     ) {
+        // Título no canto esquerdo superior
         Column(
             modifier = Modifier
                 .padding(bottom = 20.dp)
         ) {
             Text(
-                "Notas.",
+                "Notas",
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                 modifier = Modifier
                     .align(Alignment.Start)
@@ -63,26 +68,30 @@ fun NoteListScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
         }
 
         if (notes.isEmpty()) {
-            Text("Ops! Você ainda não cadastrou uma nota.", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-                , modifier = Modifier.align(
-                Alignment.TopCenter))
-
-            Box(
+            // Centralizando o conteúdo quando não há notas
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(400.dp) // Ajuste a altura conforme necessário
+                    .fillMaxSize() // Ocupar todo o espaço disponível
+                    .align(Alignment.Center), // Centralizar os itens verticalmente e horizontalmente
+                horizontalAlignment = Alignment.CenterHorizontally, // Centralizar os itens horizontalmente
+                verticalArrangement = Arrangement.Center // Centralizar os itens verticalmente
             ) {
+                Text(
+                    "Ops! Você ainda não cadastrou uma nota.",
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                )
+
+                Spacer(modifier = Modifier.height(16.dp)) // Espaço entre o texto e a imagem
+
                 Image(
                     painter = painterResource(id = R.drawable.nenhumanotacadastrada), // Substitua pelo ID da sua imagem
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(400.dp) // Ajuste a altura conforme necessário
-                        .padding(top = 16.dp)
-                        .padding(bottom = 16.dp),
+                        .height(400.dp), // Ajuste a altura conforme necessário
                     contentScale = ContentScale.Crop
                 )
-                // Créditos posicionados na parte inferior direita
+
                 Text(
                     text = "Image by rawpixel.com on Freepik",
                     style = MaterialTheme.typography.bodySmall.copy(
@@ -90,12 +99,9 @@ fun NoteListScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
                         fontWeight = FontWeight.Light
                     ),
                     modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(8.dp)
-                    // Ajuste o padding conforme necessário
+                        .padding(top = 8.dp)
                 )
             }
-
         } else {
             LazyColumn {
                 items(notes) { note ->
@@ -107,7 +113,6 @@ fun NoteListScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
                     )
                 }
             }
-
         }
 
         FloatingActionButton(
@@ -123,8 +128,13 @@ fun NoteListScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
 
 
 
+
+
 @Composable
 fun NoteItem(note: Note, onEdit: (Int) -> Unit, onDelete: (Int) -> Unit, onClick: (Int) -> Unit) {
+    // Estado para controlar a exibição da modal de confirmação
+    var showDeleteConfirmation by remember { mutableStateOf(false) }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -148,7 +158,7 @@ fun NoteItem(note: Note, onEdit: (Int) -> Unit, onDelete: (Int) -> Unit, onClick
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "${note.titulo}",
+                        text = note.titulo,
                         style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                     )
                     Spacer(modifier = Modifier.width(8.dp)) // Espaço entre o título e os botões
@@ -156,15 +166,39 @@ fun NoteItem(note: Note, onEdit: (Int) -> Unit, onDelete: (Int) -> Unit, onClick
                         IconButton(onClick = { onEdit(note.id) }) {
                             Icon(Icons.Filled.Edit, contentDescription = "Edit")
                         }
-                        IconButton(onClick = { onDelete(note.id) }) {
+                        IconButton(onClick = { showDeleteConfirmation = true }) { // Mostrar a modal de confirmação
                             Icon(Icons.Filled.Delete, contentDescription = "Delete")
                         }
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "${note.conteudo}", style = MaterialTheme.typography.bodyMedium)
+                Text(text = note.conteudo, style = MaterialTheme.typography.bodyMedium)
             }
         }
+    }
+
+    // Exibe a modal de confirmação quando `showDeleteConfirmation` é true
+    if (showDeleteConfirmation) {
+        AlertDialog(
+            onDismissRequest = { showDeleteConfirmation = false }, // Fecha o diálogo se fora dele for clicado
+            title = { Text("Confirmar exclusão") },
+            text = { Text("Você tem certeza que deseja excluir esta nota?") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        onDelete(note.id) // Executa a ação de exclusão
+                        showDeleteConfirmation = false // Fecha o diálogo após a exclusão
+                    }
+                ) {
+                    Text("Excluir")
+                }
+            },
+            dismissButton = {
+                Button(onClick = { showDeleteConfirmation = false }) {
+                    Text("Cancelar")
+                }
+            }
+        )
     }
 }
 
