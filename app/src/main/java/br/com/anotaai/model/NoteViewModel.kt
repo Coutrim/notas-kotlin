@@ -15,6 +15,9 @@ class NoteViewModel(private val repository: NoteRepository) : ViewModel() {
     private val _selectedNote = MutableLiveData<Note?>()
     val selectedNote: LiveData<Note?> get() = _selectedNote
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> get() = _isLoading
+
     init {
         loadNotes()
     }
@@ -42,7 +45,9 @@ class NoteViewModel(private val repository: NoteRepository) : ViewModel() {
 
     private fun loadNotes() {
         viewModelScope.launch {
+            _isLoading.value = true // Inicia o loading
             _notes.value = repository.getAllNotes()
+            _isLoading.value = false // Finaliza o loading
         }
     }
 
