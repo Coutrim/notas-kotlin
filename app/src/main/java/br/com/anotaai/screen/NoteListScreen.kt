@@ -55,11 +55,8 @@ fun NoteListScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        // Título no canto esquerdo superior
-        Column(
-            modifier = Modifier
-                .padding(bottom = 20.dp)
-        ) {
+        Column {
+            // Título no canto esquerdo superior
             Text(
                 "Notas",
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
@@ -67,68 +64,68 @@ fun NoteListScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
                     .align(Alignment.Start)
                     .padding(bottom = 20.dp)
             )
-        }
 
-        if (isLoading) {
-            // Exibe o loading enquanto as notas estão sendo recuperadas
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else{
+            Spacer(modifier = Modifier.height(20.dp)) // Adiciona 20dp de espaço entre o título e a lista de notas
 
-            if (notes.isEmpty()) {
-                // Centralizando o conteúdo quando não há notas
-                Column(
+            if (isLoading) {
+                // Exibe o loading enquanto as notas estão sendo recuperadas
+                Box(
                     modifier = Modifier
-                        .fillMaxSize() // Ocupar todo o espaço disponível
-                        .align(Alignment.Center), // Centralizar os itens verticalmente e horizontalmente
-                    horizontalAlignment = Alignment.CenterHorizontally, // Centralizar os itens horizontalmente
-                    verticalArrangement = Arrangement.Center // Centralizar os itens verticalmente
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        "Ops! Você ainda não cadastrou uma nota.",
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp)) // Espaço entre o texto e a imagem
-
-                    Image(
-                        painter = painterResource(id = R.drawable.nenhumanotacadastrada), // Substitua pelo ID da sua imagem
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(400.dp), // Ajuste a altura conforme necessário
-                        contentScale = ContentScale.Crop
-                    )
-
-                    Text(
-                        text = "Image by rawpixel.com on Freepik",
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            color = MaterialTheme.colorScheme.onBackground,
-                            fontWeight = FontWeight.Light
-                        ),
-                        modifier = Modifier
-                            .padding(top = 8.dp)
-                    )
+                    CircularProgressIndicator()
                 }
             } else {
-                LazyColumn {
-                    items(notes) { note ->
-                        NoteItem(
-                            note = note,
-                            onEdit = { noteId -> navController.navigate("edit_note/$noteId") },
-                            onDelete = { noteId -> noteViewModel.deleteNote(noteId) },
-                            onClick = { noteId -> navController.navigate("note_detail/$noteId") } // Navega para os detalhes
+                if (notes.isEmpty()) {
+                    // Centralizando o conteúdo quando não há notas
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize(), // Ocupar todo o espaço disponível
+                        horizontalAlignment = Alignment.CenterHorizontally, // Centralizar itens horizontalmente
+                        verticalArrangement = Arrangement.Center // Centralizar itens verticalmente
+                    ) {
+                        Text(
+                            "Ops! Você ainda não cadastrou uma nota.",
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                         )
+
+                        Spacer(modifier = Modifier.height(16.dp)) // Espaço entre o texto e a imagem
+
+                        Image(
+                            painter = painterResource(id = R.drawable.nenhumanotacadastrada), // Substitua pelo ID da sua imagem
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(400.dp), // Ajuste a altura conforme necessário
+                            contentScale = ContentScale.Crop
+                        )
+
+                        Text(
+                            text = "Image by rawpixel.com on Freepik",
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                color = MaterialTheme.colorScheme.onBackground,
+                                fontWeight = FontWeight.Light
+                            ),
+                            modifier = Modifier
+                                .padding(top = 8.dp)
+                        )
+                    }
+
+                } else {
+                    LazyColumn {
+                        items(notes) { note ->
+                            NoteItem(
+                                note = note,
+                                onEdit = { noteId -> navController.navigate("edit_note/$noteId") },
+                                onDelete = { noteId -> noteViewModel.deleteNote(noteId) },
+                                onClick = { noteId -> navController.navigate("note_detail/$noteId") } // Navega para os detalhes
+                            )
+                        }
                     }
                 }
             }
         }
-
 
         FloatingActionButton(
             onClick = { navController.navigate("add_note") },
@@ -140,7 +137,6 @@ fun NoteListScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
         }
     }
 }
-
 
 
 
