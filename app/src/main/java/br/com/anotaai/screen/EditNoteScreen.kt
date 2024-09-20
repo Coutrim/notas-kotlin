@@ -34,7 +34,7 @@ fun EditNoteScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Edit Note") },
+                title = { Text("Editar nota") },
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
@@ -55,16 +55,16 @@ fun EditNoteScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
             OutlinedTextField(
                 value = titulo,
                 onValueChange = {
-                    if (it.length <= 255) titulo = it
+                    if (it.length <= 60) titulo = it
                 },
-                label = { Text("Note Name") },
+                label = { Text("Título") },
                 isError = tituloError,
-                placeholder = { Text("Enter note title") },
+                placeholder = { Text("Digite o título da nota") },
                 modifier = Modifier.fillMaxWidth()
             )
             if (tituloError) {
                 Text(
-                    "Note Name is required and should be up to 255 characters.",
+                    "O título da nota é obrigatório e pode ter até 60 carateres.",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )
@@ -77,14 +77,14 @@ fun EditNoteScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
                 onValueChange = {
                     if (it.length <= 255) conteudo = it
                 },
-                label = { Text("Content") },
+                label = { Text("Conteúdo") },
                 isError = conteudoError,
-                placeholder = { Text("Enter content") },
+                placeholder = { Text("Digite o conteúdo da nota") },
                 modifier = Modifier.fillMaxWidth()
             )
             if (conteudoError) {
                 Text(
-                    "Content is required and should be up to 255 characters.",
+                    "O conteúdo da nota é obrigatório e pode ter até 255 caracteres.",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )
@@ -104,7 +104,7 @@ fun EditNoteScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Update Note")
+                Text("Atualizar nota")
             }
         }
     }

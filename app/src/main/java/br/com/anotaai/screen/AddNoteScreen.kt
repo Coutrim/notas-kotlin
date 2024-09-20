@@ -32,7 +32,7 @@ fun AddNoteScreen(noteViewModel: NoteViewModel, navController: NavHostController
         horizontalAlignment = Alignment.CenterHorizontally // Centraliza o conteúdo horizontalmente
     ) {
         TopAppBar(
-            title = { Text("Add Note") },
+            title = { Text("Adicione uma nota") },
             navigationIcon = {
                 IconButton(onClick = { navController.navigateUp() }) {
                     Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
@@ -77,13 +77,13 @@ fun AddNoteScreen(noteViewModel: NoteViewModel, navController: NavHostController
             onValueChange = {
                 if (it.length <= 60) titulo = it // Limita o título a 60 caracteres
             },
-            label = { Text("Note Name") },
+            label = { Text("Título") },
             isError = tituloError,
-            placeholder = { Text("Enter note title") },
+            placeholder = { Text("Digite o título da nota") },
             modifier = Modifier.fillMaxWidth() // Garante que o campo de texto ocupe toda a largura disponível
         )
         if (tituloError) {
-            Text("Note Name is required and should be up to 60 characters.",
+            Text("O título da nota é obrigatório e pode ter até 60 carateres.",
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodySmall
             )
@@ -96,13 +96,13 @@ fun AddNoteScreen(noteViewModel: NoteViewModel, navController: NavHostController
             onValueChange = {
                 if (it.length <= 255) conteudo = it
             },
-            label = { Text("Status") },
+            label = { Text("Conteúdo") },
             isError = conteudoError,
-            placeholder = { Text("Enter content") },
+            placeholder = { Text("Digite o conteúdo da nota") },
             modifier = Modifier.fillMaxWidth() // Garante que o campo de texto ocupe toda a largura disponível
         )
         if (conteudoError) {
-            Text("Status is required and should be up to 255 characters.",
+            Text("O conteúdo da nota é obrigatório e pode ter até 255 caracteres.",
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodySmall
             )
@@ -122,7 +122,7 @@ fun AddNoteScreen(noteViewModel: NoteViewModel, navController: NavHostController
             },
             modifier = Modifier.fillMaxWidth() // Garante que o botão ocupe toda a largura disponível
         ) {
-            Text("Save Note")
+            Text("Salvar nota")
         }
     }
 }

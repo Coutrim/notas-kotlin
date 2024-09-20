@@ -27,7 +27,7 @@ fun NoteDetailScreen(noteViewModel: NoteViewModel, navController: NavHostControl
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Note Details") },
+                title = { Text("Detalhes da nota") },
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
@@ -76,7 +76,7 @@ fun NoteDetailScreen(noteViewModel: NoteViewModel, navController: NavHostControl
             } ?: run {
                 // Se ainda estiver carregando, mostrar texto de carregamento
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("Loading...", style = MaterialTheme.typography.bodyLarge)
+                    Text("Carregando...", style = MaterialTheme.typography.bodyLarge)
                 }
             }
         }
