@@ -28,8 +28,8 @@ fun AddNoteScreen(noteViewModel: NoteViewModel, navController: NavHostController
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.Top, // Alinha o conteúdo na parte superior
-        horizontalAlignment = Alignment.CenterHorizontally // Centraliza o conteúdo horizontalmente
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TopAppBar(
             title = { Text("Adicione uma nota") },
@@ -38,25 +38,25 @@ fun AddNoteScreen(noteViewModel: NoteViewModel, navController: NavHostController
                     Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
                 }
             },
-            modifier = Modifier.padding(bottom = 16.dp) // Adiciona espaçamento abaixo da barra
+            modifier = Modifier.padding(bottom = 16.dp)
         )
 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(400.dp) // Ajuste a altura conforme necessário
+                .height(400.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.gatoemcimadolivro), // Substitua pelo ID da sua imagem
+                painter = painterResource(id = R.drawable.gatoemcimadolivro),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(400.dp) // Ajuste a altura conforme necessário
+                    .height(400.dp)
                     .padding(top = 16.dp)
                     .padding(bottom = 16.dp),
                 contentScale = ContentScale.Crop
             )
-            // Créditos posicionados na parte inferior direita
+
             Text(
                 text = "Image by Freepik",
                 style = MaterialTheme.typography.bodySmall.copy(
@@ -66,7 +66,7 @@ fun AddNoteScreen(noteViewModel: NoteViewModel, navController: NavHostController
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(8.dp)
-                    // Ajuste o padding conforme necessário
+
             )
         }
 
@@ -75,12 +75,12 @@ fun AddNoteScreen(noteViewModel: NoteViewModel, navController: NavHostController
         OutlinedTextField(
             value = titulo,
             onValueChange = {
-                if (it.length <= 60) titulo = it // Limita o título a 60 caracteres
+                if (it.length <= 60) titulo = it
             },
             label = { Text("Título") },
             isError = tituloError,
             placeholder = { Text("Digite o título da nota") },
-            modifier = Modifier.fillMaxWidth() // Garante que o campo de texto ocupe toda a largura disponível
+            modifier = Modifier.fillMaxWidth()
         )
         if (tituloError) {
             Text("O título da nota é obrigatório e pode ter até 60 carateres.",
@@ -99,7 +99,7 @@ fun AddNoteScreen(noteViewModel: NoteViewModel, navController: NavHostController
             label = { Text("Conteúdo") },
             isError = conteudoError,
             placeholder = { Text("Digite o conteúdo da nota") },
-            modifier = Modifier.fillMaxWidth() // Garante que o campo de texto ocupe toda a largura disponível
+            modifier = Modifier.fillMaxWidth()
         )
         if (conteudoError) {
             Text("O conteúdo da nota é obrigatório e pode ter até 255 caracteres.",
@@ -117,10 +117,10 @@ fun AddNoteScreen(noteViewModel: NoteViewModel, navController: NavHostController
 
                 if (!tituloError && !conteudoError) {
                     noteViewModel.saveNote(titulo, conteudo)
-                    navController.navigate("list_notes") // Navegar para a lista de notas
+                    navController.navigate("list_notes")
                 }
             },
-            modifier = Modifier.fillMaxWidth() // Garante que o botão ocupe toda a largura disponível
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text("Salvar nota")
         }

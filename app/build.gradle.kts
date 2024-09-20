@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.work.runtime.ktx)
     val roomVersion = "2.6.1"
 
     implementation("androidx.room:room-runtime:$roomVersion")

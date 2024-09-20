@@ -18,7 +18,6 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        // Função que retorna a instância do banco de dados
         fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -26,7 +25,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "note_database"
                 )
-                    .fallbackToDestructiveMigration()  // Use fallback destrutivo ou migração aqui
+                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance

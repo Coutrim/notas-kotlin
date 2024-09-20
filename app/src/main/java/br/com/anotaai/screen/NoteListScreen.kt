@@ -56,7 +56,7 @@ fun NoteListScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
             .padding(16.dp)
     ) {
         Column {
-            // Título no canto esquerdo superior
+
             Text(
                 "Notas",
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
@@ -65,10 +65,10 @@ fun NoteListScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
                     .padding(bottom = 20.dp)
             )
 
-            Spacer(modifier = Modifier.height(20.dp)) // Adiciona 20dp de espaço entre o título e a lista de notas
+            Spacer(modifier = Modifier.height(20.dp))
 
             if (isLoading) {
-                // Exibe o loading enquanto as notas estão sendo recuperadas
+
                 Box(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -78,26 +78,26 @@ fun NoteListScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
                 }
             } else {
                 if (notes.isEmpty()) {
-                    // Centralizando o conteúdo quando não há notas
+
                     Column(
                         modifier = Modifier
-                            .fillMaxSize(), // Ocupar todo o espaço disponível
-                        horizontalAlignment = Alignment.CenterHorizontally, // Centralizar itens horizontalmente
-                        verticalArrangement = Arrangement.Center // Centralizar itens verticalmente
+                            .fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
                     ) {
                         Text(
                             "Ops! Você ainda não cadastrou uma nota.",
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                         )
 
-                        Spacer(modifier = Modifier.height(16.dp)) // Espaço entre o texto e a imagem
+                        Spacer(modifier = Modifier.height(16.dp))
 
                         Image(
-                            painter = painterResource(id = R.drawable.nenhumanotacadastrada), // Substitua pelo ID da sua imagem
+                            painter = painterResource(id = R.drawable.nenhumanotacadastrada),
                             contentDescription = null,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(400.dp), // Ajuste a altura conforme necessário
+                                .height(400.dp),
                             contentScale = ContentScale.Crop
                         )
 
@@ -119,7 +119,7 @@ fun NoteListScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
                                 note = note,
                                 onEdit = { noteId -> navController.navigate("edit_note/$noteId") },
                                 onDelete = { noteId -> noteViewModel.deleteNote(noteId) },
-                                onClick = { noteId -> navController.navigate("note_detail/$noteId") } // Navega para os detalhes
+                                onClick = { noteId -> navController.navigate("note_detail/$noteId") }
                             )
                         }
                     }
@@ -143,14 +143,14 @@ fun NoteListScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
 
 @Composable
 fun NoteItem(note: Note, onEdit: (Int) -> Unit, onDelete: (Int) -> Unit, onClick: (Int) -> Unit) {
-    // Estado para controlar a exibição da modal de confirmação
+
     var showDeleteConfirmation by remember { mutableStateOf(false) }
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp)
-            .clickable { onClick(note.id) }, // Adiciona ação de clique no item
+            .clickable { onClick(note.id) },
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Row(
@@ -172,12 +172,12 @@ fun NoteItem(note: Note, onEdit: (Int) -> Unit, onDelete: (Int) -> Unit, onClick
                         text = note.titulo,
                         style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                     )
-                    Spacer(modifier = Modifier.width(8.dp)) // Espaço entre o título e os botões
+                    Spacer(modifier = Modifier.width(8.dp))
                     Row {
                         IconButton(onClick = { onEdit(note.id) }) {
                             Icon(Icons.Filled.Edit, contentDescription = "Edit")
                         }
-                        IconButton(onClick = { showDeleteConfirmation = true }) { // Mostrar a modal de confirmação
+                        IconButton(onClick = { showDeleteConfirmation = true }) {
                             Icon(Icons.Filled.Delete, contentDescription = "Delete")
                         }
                     }
@@ -188,17 +188,17 @@ fun NoteItem(note: Note, onEdit: (Int) -> Unit, onDelete: (Int) -> Unit, onClick
         }
     }
 
-    // Exibe a modal de confirmação quando `showDeleteConfirmation` é true
+
     if (showDeleteConfirmation) {
         AlertDialog(
-            onDismissRequest = { showDeleteConfirmation = false }, // Fecha o diálogo se fora dele for clicado
+            onDismissRequest = { showDeleteConfirmation = false },
             title = { Text("Confirmar exclusão") },
             text = { Text("Você tem certeza que deseja excluir esta nota?") },
             confirmButton = {
                 Button(
                     onClick = {
-                        onDelete(note.id) // Executa a ação de exclusão
-                        showDeleteConfirmation = false // Fecha o diálogo após a exclusão
+                        onDelete(note.id)
+                        showDeleteConfirmation = false
                     }
                 ) {
                     Text("Excluir")

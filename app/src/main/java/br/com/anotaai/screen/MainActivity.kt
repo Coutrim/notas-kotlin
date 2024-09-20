@@ -2,9 +2,11 @@ package br.com.anotaai.screen
 
 import EditNoteScreen
 import NoteDetailScreen
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -28,6 +30,7 @@ import br.com.anotaai.database.AppDatabase
 import br.com.anotaai.model.Note
 import br.com.anotaai.model.NoteViewModel
 import br.com.anotaai.model.NoteViewModelFactory
+import br.com.anotaai.notification.worker.scheduleDailyNotification
 import br.com.anotaai.repository.NoteRepository
 import br.com.anotaai.ui.theme.AnotaAiTheme
 
@@ -35,6 +38,7 @@ import br.com.anotaai.ui.theme.AnotaAiTheme
 class MainActivity : ComponentActivity() {
     private lateinit var noteViewModel: NoteViewModel
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val database = AppDatabase.getDatabase(applicationContext)
@@ -47,6 +51,8 @@ class MainActivity : ComponentActivity() {
                 MainScreen(noteViewModel)
             }
         }
+
+        scheduleDailyNotification(this)
     }
 }
 

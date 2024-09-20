@@ -18,12 +18,11 @@ fun EditNoteScreen(noteViewModel: NoteViewModel, navController: NavHostControlle
     var tituloError by remember { mutableStateOf(false) }
     var conteudoError by remember { mutableStateOf(false) }
 
-    // Recarregar dados da nota quando o noteId mudar
+
     LaunchedEffect(noteId) {
         noteViewModel.loadNoteById(noteId)
     }
 
-    // Atualizar os campos de texto quando a nota for carregada
     LaunchedEffect(note) {
         note?.let {
             titulo = it.titulo

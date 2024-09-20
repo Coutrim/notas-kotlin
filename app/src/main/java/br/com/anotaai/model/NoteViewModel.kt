@@ -45,16 +45,16 @@ class NoteViewModel(private val repository: NoteRepository) : ViewModel() {
 
     private fun loadNotes() {
         viewModelScope.launch {
-            _isLoading.value = true // Inicia o loading
+            _isLoading.value = true
             _notes.value = repository.getAllNotes()
-            _isLoading.value = false // Finaliza o loading
+            _isLoading.value = false
         }
     }
 
     fun deleteNote(id: Int) {
         viewModelScope.launch {
             repository.delete(id)
-            loadNotes() // Recarregar notas após exclusão
+            loadNotes()
         }
     }
 }
