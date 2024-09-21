@@ -1,5 +1,8 @@
 # AnotaAi - Projeto de Gerenciamento de Notas
 
+## Autor: Gustavo Henrique Alves Acacio Cavalcante
+
+
 ## Visão Geral
 
 **AnotaAi** é um aplicativo mobile de gerenciamento de notas desenvolvido com **Jetpack Compose** e **Room (SQLite)** para persistência de dados. O projeto tem como objetivo simplificar o processo de criar, editar e armazenar notas, oferecendo uma interface amigável e moderna, que segue as diretrizes do **Material Design**.
